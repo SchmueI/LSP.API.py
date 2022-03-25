@@ -4,12 +4,11 @@ from datetime import datetime, time
 import re
 import requests
 import codecs
-import manUsers
 
-def get_plan(url, payload, typus):
+def get_plan(payload, typus):
     with requests.Session() as s:                                                                                                   #Neue Session erstellen
         try:
-            r = s.post(url, data=payload);
+            r = s.post(https://www.landesschule-pforta.de/login.php, data=payload);
             waitTime.sleep(1)
             cookie = {'PHPSESSID': requests.utils.dict_from_cookiejar(s.cookies)['PHPSESSID']}                                      #Friss den Cookie                                                                                                 
             r = s.post('https://www.landesschule-pforta.de/intern/aktuell/vertretungsplan.php', cookies=cookie, data=payload)       #Nutze cookie, um HiddenSite zu öffnen

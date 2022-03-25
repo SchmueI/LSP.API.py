@@ -4,12 +4,11 @@ from datetime import datetime, time
 import re
 import requests
 import codecs
-import manUsers
 
-def registrations(url, payload):
+def registrations(payload):
 
     with requests.Session() as s:
-        r = s.post(url, data=payload);
+        r = s.post("https://www.landesschule-pforta.de/login.php", data=payload);
         cookie = {'PHPSESSID': requests.utils.dict_from_cookiejar(s.cookies)['PHPSESSID']}
         waitTime.sleep(1)
         r = s.post('https://www.landesschule-pforta.de/intern/aktuell/busreservierung.php', cookies=cookie, data=payload)
@@ -33,31 +32,33 @@ def registrations(url, payload):
         else: 
             return "Konnte keine Verbindung zum Server herstellen.\nDas kann zum Beispiel an zu vielen Zugriffen liegen. Probiere später nochmal /rplan um die bisherigen Anmeldungen zu sehen."
 
-def register(url, wsuser, wspass, wskind):
+def register(wsuser, wspass, wskind):
     with requests.Session() as s:
-        r = s.post(url, data={'user':wsuser ,'pwd':wspass});
+        r = s.post("https://www.landesschule-pforta.de/login.php", data={'user':wsuser ,'pwd':wspass});
         cookie = {'PHPSESSID': requests.utils.dict_from_cookiejar(s.cookies)['PHPSESSID']}
         r = s.post('https://www.landesschule-pforta.de/intern/aktuell/busreservierung.php', cookies=cookie, data={'user':wsuser ,'pwd':wspass})          
         if(wskind==0):
             r = s.post('https://www.landesschule-pforta.de/intern/aktuell/busreservierung.php', cookies=cookie, data={'user':wsuser, 'pwd':wspass, 'aktion':'', 'aktion':'reservierungSpeichern', 'bus':'0'}) 
             waitTime.sleep(1)
-            if not (registrations(url, {"user":wsuser,"pwd":wspass})==""): return "Ich habe dich zum Bus nach Naumburg angemeldet"
-            else: return "Die Anmeldung wurde noch nicht freigeschaltet"
+            if not (registrations("https://www.landesschule-pforta.de/login.php", {"user":wsuser,"pwd":wspass})==""): return 1
+            else: return 0
         elif(wskind==1):
             r = s.post('https://www.landesschule-pforta.de/intern/aktuell/busreservierung.php', cookies=cookie, data={'user':wsuser, 'pwd':wspass, 'aktion':'', 'aktion':'reservierungSpeichern', 'bus':'1'})
             waitTime.sleep(1)
-            return "Ich habe dich zum Bus nach Bad Kösen angemeldet"
+            if not (registrations("https://www.landesschule-pforta.de/login.php", {"user":wsuser,"pwd":wspass})==""): return 1
+            else: return 0
         else:
             r = s.post('https://www.landesschule-pforta.de/intern/aktuell/busreservierung.php', cookies=cookie, data={'user':wsuser, 'pwd':wspass, 'aktion':'', 'aktion':'reservierungSpeichern', 'bus':'2'}) 
             waitTime.sleep(1)
-            return "Ich habe dich zum Bus nach Bad Kösen mit Wechseloption zum Bus nach Naumburg angemeldet."
+            if not (registrations("https://www.landesschule-pforta.de/login.php", {"user":wsuser,"pwd":wspass})==""): return 1
+            else: return 0
 
-def deregister(url, wsuser, wspass):
+def deregister(wsuser, wspass):
 
     with requests.Session() as s:
-        r = s.post(url, data={'user':wsuser ,'pwd':wspass});
+        r = s.post("https://www.landesschule-pforta.de/login.php", data={'user':wsuser ,'pwd':wspass});
         cookie = {'PHPSESSID': requests.utils.dict_from_cookiejar(s.cookies)['PHPSESSID']}
         r = s.post('https://www.landesschule-pforta.de/intern/aktuell/iweAnmeldung.php', cookies=cookie, data={'user':wsuser ,'pwd':wspass})
         r = s.post('https://www.landesschule-pforta.de/intern/aktuell/busreservierung.php', cookies=cookie, data={'user':wsuser, 'pwd':wspass, 'aktion':'', 'aktion':'reservierungLoeschen'}) 
         waitTime.sleep(1)
-        return "Ich habe dich vom Bus abgemeldet"
+        return 1

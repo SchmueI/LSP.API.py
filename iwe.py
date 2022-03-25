@@ -4,10 +4,11 @@ from datetime import datetime, time
 import re
 import requests
 import codecs
-def get_IWE(url, payload):
+
+def get_IWE(payload):
 
     with requests.Session() as s:                                                                                               #Neue Session erstellen
-        r = s.post(url, data=payload);
+        r = s.post("https://www.landesschule-pforta.de/login.php", data=payload);
         cookie = {'PHPSESSID': requests.utils.dict_from_cookiejar(s.cookies)['PHPSESSID']}                                      #Friss den Cookie                                                                                             
         r = s.post('https://www.landesschule-pforta.de/intern/aktuell/iweAnmeldung.php', cookies=cookie, data=payload)          #Nutze cookie, um HiddenSite zu öffnen                                                                                                                     #Speichere Inhalt
         waitTime.sleep(2)
@@ -98,9 +99,9 @@ def get_IWE(url, payload):
             iwestring="Folgende Schüler haben sich *zum IWE angemeldet*\n"+iwestring
             return iwestring
 
-def IWE_anmelden(url, wsuser, wspass, wszusatz):
+def IWE_anmelden(wsuser, wspass, wszusatz):
     with requests.Session() as s:
-        r = s.post(url, data={'user':wsuser ,'pwd':wspass});
+        r = s.post("https://www.landesschule-pforta.de/login.php", data={'user':wsuser ,'pwd':wspass});
         cookie = {'PHPSESSID': requests.utils.dict_from_cookiejar(s.cookies)['PHPSESSID']}                                      #Friss den Cookie                                                                                                 
         r = s.post('https://www.landesschule-pforta.de/intern/aktuell/iweAnmeldung.php', cookies=cookie, data={'user':wsuser ,'pwd':wspass})          #Nutze cookie, um HiddenSite zu öffnen
         waitTime.sleep(2)
@@ -119,15 +120,14 @@ def IWE_anmelden(url, wsuser, wspass, wszusatz):
                 transid=c[0]
                 #print(transid)
         if(transid=="0"):
-            return  "Zugriff verweigert.\n Bitte nutze /user und /passwort um dich anzumelden.\nWenn du den Bot nicht nutzen willst und keine automatischen Nachrichten zugesandt bekommen willst, nutze /stop."
+            return  0
         else:
-            r = s.post('https://www.landesschule-pforta.de/intern/aktuell/iweAnmeldung.php', cookies=cookie, data={'user':wsuser, 'pwd':wspass, 'aktion':'', 'transid':transid, 'zusatz':wszusatz, 'aktion':'anmeldungSpeichern'})
-            return "Ich habe dich zum IWE angemeldet."
+            return 1
         
-def IWE_abmelden(url, wsuser, wspass):
+def IWE_abmelden(wsuser, wspass):
 
     with requests.Session() as s:                                                                                                                                                         
-        r = s.post(url, data={'user':wsuser ,'pwd':wspass});
+        r = s.post("https://www.landesschule-pforta.de/login.php", data={'user':wsuser ,'pwd':wspass});
         cookie = {'PHPSESSID': requests.utils.dict_from_cookiejar(s.cookies)['PHPSESSID']}                                                                                                #Friss den Cookie                                                                                                    
         r = s.post('https://www.landesschule-pforta.de/intern/aktuell/iweAnmeldung.php', cookies=cookie, data={'user':wsuser ,'pwd':wspass})                                              #Nutze cookie, um HiddenSite zu öffnen
         waitTime.sleep(2)
@@ -145,8 +145,6 @@ def IWE_abmelden(url, wsuser, wspass):
                 c=b[1].split('" />', 1)
                 transid=c[0]
         if(transid=="0"):
-            return "Zugriff verweigert.\n Bitte nutze /user und /passwort um dich anzumelden."
-            print("          {fetchHTML} >> Zugriff verweigert. (IWE)")
+            return 0
         else:
-            r = s.post('https://www.landesschule-pforta.de/intern/aktuell/iweAnmeldung.php', cookies=cookie, data={'user':wsuser, 'pwd':wspass, 'aktion':'', 'transid':transid, 'aktion':'anmeldungLoeschen'})          #Nutze Daten um Post durchzuführen
-            return "Ich habe dich vom IWE abgemeldet."
+            return 1

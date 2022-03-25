@@ -4,11 +4,9 @@ from datetime import datetime, time
 import re
 import requests
 import codecs
-import manUsers
-
-def appr(url, payload):
+def appr(payload):
     with requests.Session() as s:  
-        r = s.post(url, data=payload);
+        r = s.post("https://www.landesschule-pforta.de/login.php", data=payload);
         waitTime.sleep(1)
         cookie = {'PHPSESSID': requests.utils.dict_from_cookiejar(s.cookies)['PHPSESSID']}                                      #Friss den Cookie                                                                                                 
         r = s.post('https://www.landesschule-pforta.de/intern/aktuell/vertretungsplan.php', cookies=cookie, data=payload)       #Nutze cookie, um HiddenSite zu öffnen
@@ -17,8 +15,8 @@ def appr(url, payload):
         name=""
         try:
             cutClass=htmlContents.split("Angemeldet:", 1);
-            return true
+            return True
         except IndexError:
-            return false
+            return False
         except:
             pass
