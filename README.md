@@ -97,6 +97,7 @@ was successfull.
 The Response will be 0 if the registrations are not yet opened. (On Weekends for example)
 
 ### deregister(USERNAME, PASSWORD)
+
 This method will try to delete the registration of the user to a Bus.
     import bus
     bus.deregister("USERNAME", "PASSWORD")
