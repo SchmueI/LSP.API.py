@@ -17,6 +17,7 @@ def registrations(payload):
         retValue = ""
         if ("<h1>Busreservierung</h1>" in content):
             content = content.split("reservierung</h1>", 1)[1]
+            if ("In der Datenbank sind keine Abreisetage registriert." in content): return ""
             content = content.split("Nmb (12:50)</b></div>", 1)[1]
             retValue = "<b>Bus nach Naumburg (12:50)</b>"
             retValue = retValue + content.split('<div class="busRe">', 1)[0].replace("<div>", "").replace("</div>", "").replace("	", "")
