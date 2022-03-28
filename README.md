@@ -16,8 +16,8 @@ sure you follow the documentation as exact as possible.
 approve.py uses the following method appr(< payload >). The Method can be used to prove if a set of username and password
 is valid. The Output value is either True or False. Usage is as follows:
 
-    import vplan
-    vplan.get_plan({"user":USERNAME,"pwd":PASSWORD})
+    import approve
+    approve.appr({"user":USERNAME,"pwd":PASSWORD})
 
 ## vplan.py
 
