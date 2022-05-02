@@ -122,6 +122,7 @@ def IWE_anmelden(wsuser, wspass, wszusatz = ""):
         if(transid=="0"):
             return  0
         else:
+            r = s.post('https://www.landesschule-pforta.de/intern/aktuell/iweAnmeldung.php', cookies=cookie, data={'user':wsuser, 'pwd':wspass, 'aktion':'', 'transid':transid, 'zusatz':wszusatz, 'aktion':'anmeldungSpeichern'})
             return 1
         
 def IWE_abmelden(wsuser, wspass):
@@ -147,4 +148,5 @@ def IWE_abmelden(wsuser, wspass):
         if(transid=="0"):
             return 0
         else:
+            r = s.post('https://www.landesschule-pforta.de/intern/aktuell/iweAnmeldung.php', cookies=cookie, data={'user':wsuser, 'pwd':wspass, 'aktion':'', 'transid':transid, 'aktion':'anmeldungLoeschen'}) 
             return 1
