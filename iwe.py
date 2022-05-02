@@ -99,7 +99,7 @@ def get_IWE(payload):
             iwestring="Folgende Schüler haben sich *zum IWE angemeldet*\n"+iwestring
             return iwestring
 
-def IWE_anmelden(wsuser, wspass, wszusatz):
+def IWE_anmelden(wsuser, wspass, wszusatz = ""):
     with requests.Session() as s:
         r = s.post("https://www.landesschule-pforta.de/login.php", data={'user':wsuser ,'pwd':wspass});
         cookie = {'PHPSESSID': requests.utils.dict_from_cookiejar(s.cookies)['PHPSESSID']}                                      #Friss den Cookie                                                                                                 

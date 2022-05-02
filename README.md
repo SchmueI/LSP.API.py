@@ -60,11 +60,8 @@ This method will try to register the user to an IWE. You don't transmit the user
     import iwe
     iwe.IWE_anmelden("USERNAME", "PASSWORD", "ATTRIBUTE")
 
-The Attribute is not optional. It cotains any specific information about the registration. For example workshop registrations
-or exceptional days and so on. If you don't want to send an Attribute, you shall transmit an empty String instead:
-
-    import iwe
-    iwe.IWE_anmelden("USERNAME", "PASSWORD", "")
+The Attribute is optional. It cotains any specific information about the registration. For example workshop registrations
+or exceptional days and so on. 
 
 The response would be a 1 if the registration was successfull or a 0 if the registration failed.
 Please note that a return value of 0 doesnt necessarily mean that the password or username was wrong. A very common reason
