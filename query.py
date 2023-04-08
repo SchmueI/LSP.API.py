@@ -53,13 +53,7 @@ def get_IWE_by_query(user, password, query):
                     found.append(teilnehmer)
     
     found = [dict(t) for t in {tuple(student.items()) for student in found}]
-    output = ["{}. {} ({}{}); {}, {}".format(number, student["name"], student["grade"], student["branch"], student["dorm"], student["room"]) for number, student in enumerate(found)]
+    output = ["{}. {} ({}{})\nInt. {}, {}\n".format(number+1, student["name"], student["grade"], student["branch"], student["dorm"], student["room"]) for number, student in enumerate(found)]
     
 
     return "\n".join(output)
-    
-
-
-
-print(get_IWE_by_query("thieroff", "m4HA9bu**", "12 FüHa"))
-
